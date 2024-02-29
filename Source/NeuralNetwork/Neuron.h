@@ -8,6 +8,7 @@
 #include "Neuron.generated.h"
 
 class UNetworkLayer;
+
 /**
  * 
  */
@@ -18,21 +19,22 @@ class NEURALNETWORK_API UNeuron : public UObject
 
 public:
 	UNeuron();
-	void Init(uint32 NumInputs, double LearningRate_, NeuralNetwork::EActivationFunction ActivationFunction_);
+	void Init(int32 NumInputs, double LearningRate_, NeuralNetwork::EActivationFunction ActivationFunction_);
 	void CalculateOutputGradient(double TargetOutput);
-	void CalculateHiddenGradient(const UNetworkLayer& LayerToTheRight, uint32 Index);
-	void FeedForward(const TArray<UNeuron>& NeuronsOfPreviousLayer);
-	void UpdateWeights(const TArray<UNeuron>& NeuronsOfPreviousLayer, bool bIsOutputLayer);
+	void CalculateHiddenGradient(UNetworkLayer* LayerToTheRight, int32 Index);
+	void FeedForward(const TArray<UNeuron*>& NeuronsOfPreviousLayer);
+	void UpdateWeights(const TArray<UNeuron*>& NeuronsOfPreviousLayer, bool bIsOutputLayer);
 	void UpdateBias();
+	
+	double Output;
+	double ErrorDelta;
 	
 protected:
 	double Activate(double Input) const;
 	double ActivateDerivative(double Input) const;
 	
 	double OriginalOutput;
-	double Output;
 	double ErrorGradient;
-	double ErrorDelta;
 	double Bias;
 	double LearningRate;
 	NeuralNetwork::EActivationFunction ActivationFunction;
